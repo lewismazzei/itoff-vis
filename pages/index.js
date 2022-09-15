@@ -17,7 +17,11 @@ const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), {
 })
 
 export async function getServerSideProps() {
-  const auth = await google.auth.getClient({
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: process.env.CLIENT_EMAIL,
+      private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+    },
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   })
 
