@@ -43,47 +43,79 @@ export async function getServerSideProps() {
   }
 }
 
+const parseImpactingString = (impactingString) => {
+  if (impactingString === '' || impactingString === undefined) {
+    return null
+  }
+
+  // split species name from impact types via regex pattern
+  return impactingString
+    .trim()
+    .split(';')
+    .map((impactingSubstring) => {
+      const [, speciesName, impactTypesString] =
+        /([^\(]+)\s(?:\(([^)]+)\))?/.exec(impactingSubstring.trim())
+      return {
+        name: speciesName,
+        impactTypes:
+          impactTypesString !== undefined
+            ? impactTypesString.split(',').map((s) => s.trim())
+            : ['Unclear'],
+      }
+    })
+}
+
 export default function Home({ sheet, allSpecies }) {
   const [list, setList] = useState(allSpecies)
   const [graph, setGraph] = useState({ nodes: [], links: [] })
 
-  const expandGraph = (graph, impacterName) => {
+  const expandGraph = (graph, speciesName) => {
     // get row of impacter species
-    const impacterRow = allSpecies.indexOf(impacterName)
+    const speciesRow = allSpecies.indexOf(speciesName)
 
     // return graph as is if impacter species cannot be found
-    if (impacterRow === -1) return graph
-
-    // get list of impacted species
-    const impactingString = sheet[impacterRow][14]
-
-    // return graph as is if there are no impacted species
-    if (impactingString === '') return graph
+    if (speciesRow === -1) return graph
 
     // parse impacted species names and types
-    const impactedSpecies = impactingString
-      .split(';')
-      .map((s) => s.trim())
-      .map((impactingSubstring) => {
-        const matches = /([^)]+)\s\(([^)]+)\)/.exec(impactingSubstring)
-        return {
-          name: matches[1],
-          impactTypes: matches[2].split(',').map((s) => s.trim()),
+    const impactedSpecies = parseImpactingString(sheet[speciesRow][14])
+
+    // return graph as is if there are no impacted species
+    if (impactedSpecies) {
+      // iterate through impacted species
+      for (const impacted of impactedSpecies) {
+        // if impacted species is not in the graph
+        if (!graph.nodes.some((node) => node.id === impacted.name)) {
+          // add it as a node
+          graph.nodes.push({ id: impacted.name })
+          // and recurse to further expand graph
+          graph = expandGraph(graph, impacted.name)
         }
-      })
 
-    // iterate through impacted species
-    for (const species of impactedSpecies) {
-      // if impacted species is not in the graph
-      if (!graph.nodes.some((node) => node.id === species.name)) {
-        // add it as a node
-        graph.nodes.push({ id: species.name })
-        // and recurse to further expand graph
-        graph = expandGraph(graph, species.name)
+        // add directed link from impacter to impacted species
+        graph.links.push({ source: speciesName, target: impacted.name })
       }
+    }
 
-      // add directed link from impacter to impacted species
-      graph.links.push({ source: impacterName, target: species.name })
+    for (const sheetRow of sheet) {
+      const impactingSpeciesName = sheetRow[0]
+      const impactedSpecies = parseImpactingString(sheetRow[14])
+
+      if (!impactedSpecies) continue
+
+      if (impactedSpecies.some((impacted) => impacted.name === speciesName)) {
+        if (!graph.nodes.some((node) => node.id === impactingSpeciesName)) {
+          // add it as a node
+          graph.nodes.push({ id: impactingSpeciesName })
+          // and recurse to further expand graph
+          graph = expandGraph(graph, impactingSpeciesName)
+        }
+
+        // add directed link from impacter to impacted species
+        graph.links.push({
+          source: impactingSpeciesName,
+          target: speciesName,
+        })
+      }
     }
 
     return graph
