@@ -1,7 +1,7 @@
 // import Head from 'next/head'
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { google } from 'googleapis'
 import { Allotment } from 'allotment'
 import 'allotment/dist/style.css'
@@ -10,11 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import dynamic from 'next/dynamic'
-
-const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), {
-  ssr: false,
-})
+import SpeciesGraph from '../components/SpeciesGraphWrapper'
 
 export async function getServerSideProps() {
   const auth = new google.auth.GoogleAuth({
@@ -67,7 +63,11 @@ const parseImpactingString = (impactingString) => {
 
 export default function Home({ sheet, allSpecies }) {
   const [list, setList] = useState(allSpecies)
-  const [graph, setGraph] = useState({ nodes: [], links: [] })
+  // const [selected, setSelected] = useState(null)
+  const [graph, setGraph] = useState({
+    root: null,
+    data: { nodes: [], links: [] },
+  })
 
   const expandGraph = (graph, speciesName) => {
     // get row of impacter species
@@ -84,15 +84,15 @@ export default function Home({ sheet, allSpecies }) {
       // iterate through impacted species
       for (const impacted of impactedSpecies) {
         // if impacted species is not in the graph
-        if (!graph.nodes.some((node) => node.id === impacted.name)) {
+        if (!graph.data.nodes.some((node) => node.id === impacted.name)) {
           // add it as a node
-          graph.nodes.push({ id: impacted.name })
+          graph.data.nodes.push({ id: impacted.name })
           // and recurse to further expand graph
           graph = expandGraph(graph, impacted.name)
         }
 
         // add directed link from impacter to impacted species
-        graph.links.push({ source: speciesName, target: impacted.name })
+        graph.data.links.push({ source: speciesName, target: impacted.name })
       }
     }
 
@@ -103,15 +103,17 @@ export default function Home({ sheet, allSpecies }) {
       if (!impactedSpecies) continue
 
       if (impactedSpecies.some((impacted) => impacted.name === speciesName)) {
-        if (!graph.nodes.some((node) => node.id === impactingSpeciesName)) {
+        if (
+          !graph.data.nodes.some((node) => node.id === impactingSpeciesName)
+        ) {
           // add it as a node
-          graph.nodes.push({ id: impactingSpeciesName })
+          graph.data.nodes.push({ id: impactingSpeciesName })
           // and recurse to further expand graph
           graph = expandGraph(graph, impactingSpeciesName)
         }
 
         // add directed link from impacter to impacted species
-        graph.links.push({
+        graph.data.links.push({
           source: impactingSpeciesName,
           target: speciesName,
         })
@@ -124,8 +126,11 @@ export default function Home({ sheet, allSpecies }) {
   const buildGraph = (speciesName) => {
     // initialise graph with selected species
     let graph = {
-      nodes: [{ id: speciesName }],
-      links: [],
+      root: speciesName,
+      data: {
+        nodes: [{ id: speciesName }],
+        links: [],
+      },
     }
     // expand graph with impacted species
     graph = expandGraph(graph, speciesName)
@@ -139,7 +144,9 @@ export default function Home({ sheet, allSpecies }) {
     return (
       <ListItem key={index} style={style} component='div' disablePadding>
         <ListItemButton
-          onClick={(e) => setGraph(buildGraph(e.target.innerText))}
+          onClick={(e) => {
+            setGraph(buildGraph(e.target.innerText))
+          }}
         >
           <ListItemText primary={species} />
         </ListItemButton>
@@ -164,52 +171,11 @@ export default function Home({ sheet, allSpecies }) {
             </List>
           )}
         </AutoSizer>
-        <AutoSizer>
-          {({ height, width }) => (
-            <ForceGraph2D
-              height={height}
-              width={width}
-              graphData={graph}
-              nodeAutoColorBy='group'
-              linkWidth={1}
-              linkDirectionalArrowLength={5}
-              linkDirectionalArrowRelPos={0.75}
-              nodeCanvasObject={(node, ctx, globalScale) => {
-                const label = node.id
-                const fontSize = 14 / globalScale
-                ctx.font = `${fontSize}px Sans-Serif`
-                const textWidth = ctx.measureText(label).width
-                const bckgDimensions = [textWidth, fontSize].map(
-                  (n) => n + fontSize * 0.2
-                ) // some padding
-
-                ctx.fillStyle = 'rgba(255, 255, 255, 1)'
-                ctx.fillRect(
-                  node.x - bckgDimensions[0] / 2,
-                  node.y - bckgDimensions[1] / 2,
-                  ...bckgDimensions
-                )
-
-                ctx.textAlign = 'center'
-                ctx.textBaseline = 'middle'
-                ctx.fillStyle = node.color
-                ctx.fillText(label, node.x, node.y)
-
-                node.__bckgDimensions = bckgDimensions // to re-use in nodePointerAreaPaint
-              }}
-              nodePointerAreaPaint={(node, color, ctx) => {
-                ctx.fillStyle = color
-                const bckgDimensions = node.__bckgDimensions
-                bckgDimensions &&
-                  ctx.fillRect(
-                    node.x - bckgDimensions[0] / 2,
-                    node.y - bckgDimensions[1] / 2,
-                    ...bckgDimensions
-                  )
-              }}
-            />
-          )}
-        </AutoSizer>
+        {graph.root ? (
+          <SpeciesGraph speciesName={graph.root} graphData={graph.data} />
+        ) : (
+          <div></div>
+        )}
       </Allotment>
     </div>
   )
