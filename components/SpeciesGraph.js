@@ -23,6 +23,7 @@ export default function SpeciesGraph({ speciesName, graphData }) {
           }}
           nodeAutoColorBy='group'
           linkWidth={1}
+          linkLabel={(link) => link.impactTypes.join(',')}
           linkDirectionalArrowLength={5}
           linkDirectionalArrowRelPos={0.75}
           nodeCanvasObject={(node, ctx, globalScale) => {

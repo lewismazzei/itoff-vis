@@ -92,7 +92,11 @@ export default function Home({ sheet, allSpecies }) {
         }
 
         // add directed link from impacter to impacted species
-        graph.data.links.push({ source: speciesName, target: impacted.name })
+        graph.data.links.push({
+          source: speciesName,
+          target: impacted.name,
+          impactTypes: impacted.impactTypes,
+        })
       }
     }
 
@@ -116,6 +120,9 @@ export default function Home({ sheet, allSpecies }) {
         graph.data.links.push({
           source: impactingSpeciesName,
           target: speciesName,
+          impactTypes: impactedSpecies.find(
+            (impacted) => impacted.name === speciesName
+          ).impactTypes,
         })
       }
     }
