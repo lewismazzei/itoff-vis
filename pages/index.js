@@ -179,7 +179,11 @@ export default function Home({ sheet, allSpecies }) {
           )}
         </AutoSizer>
         {graph.root ? (
-          <SpeciesGraph speciesName={graph.root} graphData={graph.data} />
+          <SpeciesGraph
+            speciesName={graph.root}
+            graphData={graph.data}
+            sheet={sheet}
+          />
         ) : (
           <div></div>
         )}
