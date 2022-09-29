@@ -86,7 +86,10 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             spacing={2}
             columns={1}
             sx={{
-              paddingTop: 1,
+              paddingTop: 2,
+              paddingLeft: 2,
+              paddingRight: 2,
+              maxWidth: '25vw',
             }}
           >
             <Grid item xs={1} align='center' sx={{ fontSize: 'h6.fontSize' }}>
