@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SpeciesGraph from '../components/SpeciesGraphWrapper'
+import TextField from '@mui/material/TextField'
 
 export async function getServerSideProps() {
   const auth = new google.auth.GoogleAuth({
@@ -164,20 +165,39 @@ export default function Home({ sheet, allSpecies }) {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Allotment snap>
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              width={width}
-              itemData={list}
-              itemCount={list.length}
-              itemSize={46}
-              overscanCount={50}
-            >
-              {ListItems}
-            </List>
-          )}
-        </AutoSizer>
+        <>
+          <form>
+            <TextField
+              id='search-bar'
+              className='text'
+              onInput={(e) => {
+                setList(() => {
+                  if (!e.target.value) return allSpecies
+                  return allSpecies.filter((speciesName) =>
+                    speciesName.toLowerCase().includes(e.target.value)
+                  )
+                })
+              }}
+              variant='filled'
+              size='small'
+              fullWidth
+            />
+          </form>
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                width={width}
+                itemData={list}
+                itemCount={list.length}
+                itemSize={46}
+                overscanCount={50}
+              >
+                {ListItems}
+              </List>
+            )}
+          </AutoSizer>
+        </>
         {graph.root ? (
           <SpeciesGraph
             speciesName={graph.root}
