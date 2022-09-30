@@ -10,9 +10,9 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
   const [speciesInfo, setSpeciesInfo] = useState(null)
 
   return (
-    <>
-      <AutoSizer>
-        {({ height, width }) => (
+    <AutoSizer>
+      {({ height, width }) => (
+        <>
           <ForceGraph2D
             ref={fgRef}
             height={height}
@@ -77,30 +77,37 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
               setOpen(true)
             }}
           />
-        )}
-      </AutoSizer>
-      <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
-        {speciesInfo && (
-          <Grid
-            container
-            spacing={2}
-            columns={1}
-            sx={{
-              paddingTop: 2,
-              paddingLeft: 2,
-              paddingRight: 2,
-              maxWidth: '25vw',
-            }}
-          >
-            <Grid item xs={1} align='center' sx={{ fontSize: 'h6.fontSize' }}>
-              {speciesInfo.name}
-            </Grid>
-            <Grid item xs={1} align='center'>
-              {speciesInfo.info}
-            </Grid>
-          </Grid>
-        )}
-      </Drawer>
-    </>
+
+          <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
+            {speciesInfo && (
+              <Grid
+                container
+                spacing={2}
+                columns={1}
+                sx={{
+                  paddingTop: 2,
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                  maxWidth: '25vw',
+                  minWidth: '250px',
+                }}
+              >
+                <Grid
+                  item
+                  xs={1}
+                  align='center'
+                  sx={{ fontSize: 'h6.fontSize' }}
+                >
+                  {speciesInfo.name}
+                </Grid>
+                <Grid item xs={1} align='center'>
+                  {speciesInfo.info}
+                </Grid>
+              </Grid>
+            )}
+          </Drawer>
+        </>
+      )}
+    </AutoSizer>
   )
 }
