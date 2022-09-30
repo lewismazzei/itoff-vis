@@ -26,7 +26,6 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
               fgRef.current.centerAt(rootNode.x, rootNode.y, 250)
               fgRef.current.zoom(5, 250)
             }}
-            nodeAutoColorBy='group'
             linkWidth={1}
             linkLabel={(link) => link.impactTypes.join(', ')}
             linkDirectionalArrowLength={5}
@@ -49,7 +48,44 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
 
               ctx.textAlign = 'center'
               ctx.textBaseline = 'middle'
-              ctx.fillStyle = node.color
+
+              {
+                /* colour node by species status */
+              }
+              const speciesRow = sheet.findIndex((row) => row[0] == node.id)
+              let status = speciesRow === -1 ? undefined : sheet[speciesRow][10]
+
+              {
+                /* missing */
+              }
+              if (status === undefined) {
+                ctx.fillStyle = 'grey'
+              } else {
+                status = status.toLowerCase()
+              }
+
+              {
+                /* invasive, established, failed, extirpated */
+              }
+              if (
+                status === 'invasive' ||
+                status === 'established' ||
+                status === 'failed' ||
+                status === 'extirpated'
+              ) {
+                ctx.fillStyle = 'red'
+                {
+                  /* CR, EN */
+                }
+              } else if (status === 'cr' || status === 'en') {
+                ctx.fillStyle = 'blue'
+                {
+                  /* other */
+                }
+              } else {
+                ctx.fillStyle = 'grey'
+              }
+
               ctx.fillText(label, node.x, node.y)
 
               node.__bckgDimensions = bckgDimensions // to re-use in nodePointerAreaPaint
