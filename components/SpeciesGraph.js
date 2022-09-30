@@ -53,38 +53,49 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                 /* colour node by species status */
               }
               const speciesRow = sheet.findIndex((row) => row[0] == node.id)
-              let status = speciesRow === -1 ? undefined : sheet[speciesRow][10]
+              const status =
+                speciesRow === -1 ? undefined : sheet[speciesRow][10]
+              let color = ''
 
               {
                 /* missing */
               }
               if (status === undefined) {
-                ctx.fillStyle = 'grey'
+                color = 'grey'
               } else {
-                status = status.toLowerCase()
-              }
-
-              {
-                /* invasive, established, failed, extirpated */
-              }
-              if (
-                status === 'invasive' ||
-                status === 'established' ||
-                status === 'failed' ||
-                status === 'extirpated'
-              ) {
-                ctx.fillStyle = 'red'
-                {
-                  /* CR, EN */
+                switch (status.toLowerCase()) {
+                  case 'invasive':
+                    color = '#FF2C00'
+                    break
+                  case 'established':
+                    color = '#FF8D53'
+                    break
+                  case 'reported':
+                    color = '#FFEF2F'
+                    break
+                  case 'failed':
+                    color = '#FFB0B5'
+                    break
+                  case 'extirpated':
+                    color = '#FFD698'
+                    break
+                  case 'en':
+                    color = '#8DC9FF'
+                    break
+                  case 'cr':
+                    color = '#0006FF'
+                    break
+                  case 'lc':
+                    color = '#77FF80'
+                    break
+                    {
+                      /* other */
+                    }
+                  default:
+                    color = 'grey'
                 }
-              } else if (status === 'cr' || status === 'en') {
-                ctx.fillStyle = 'blue'
-                {
-                  /* other */
-                }
-              } else {
-                ctx.fillStyle = 'grey'
               }
+              ctx.fillStyle = color
 
               ctx.fillText(label, node.x, node.y)
 
