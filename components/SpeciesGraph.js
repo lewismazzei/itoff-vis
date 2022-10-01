@@ -113,14 +113,24 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             }}
             onNodeClick={(node) => {
               const speciesRow = sheet.findIndex((row) => row[0] == node.id)
-              const info = speciesRow === -1 ? '' : sheet[speciesRow][35]
-              setSpeciesInfo({
+
+              let info = {
                 name: node.id,
-                info:
-                  info === '' || info === 'NA' || info === undefined
-                    ? 'No Info'
-                    : info,
-              })
+                system: 'No Data',
+                status: 'No Data',
+                climateRegion: 'No Data',
+                generationTime: 'No Data',
+                trophicLevel: 'No Data',
+              }
+              if (speciesRow > -1) {
+                info.system = sheet[speciesRow][7]
+                info.status = sheet[speciesRow][10]
+                info.climateRegion = sheet[speciesRow][13]
+                info.generationTime = sheet[speciesRow][21]
+                info.trophicLevel = sheet[speciesRow][22]
+              }
+
+              setSpeciesInfo(info)
               setOpen(true)
             }}
           />
@@ -129,13 +139,13 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             {speciesInfo && (
               <Grid
                 container
-                spacing={2}
+                spacing={1}
                 columns={1}
                 sx={{
                   paddingTop: 2,
                   paddingLeft: 2,
                   paddingRight: 2,
-                  maxWidth: '25vw',
+                  maxWidth: '15vw',
                   minWidth: '250px',
                 }}
               >
@@ -143,12 +153,39 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                   item
                   xs={1}
                   align='center'
-                  sx={{ fontSize: 'h6.fontSize' }}
+                  sx={{ fontSize: 'h6.fontSize', paddingBottom: 2 }}
                 >
                   {speciesInfo.name}
                 </Grid>
-                <Grid item xs={1} align='center'>
-                  {speciesInfo.info}
+                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                  {'System'}
+                </Grid>
+                <Grid item xs={1} align='left'>
+                  {speciesInfo.system}
+                </Grid>
+                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                  {'Status'}
+                </Grid>
+                <Grid item xs={1} align='left'>
+                  {speciesInfo.status}
+                </Grid>
+                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                  {'Climate Region'}
+                </Grid>
+                <Grid item xs={1} align='left'>
+                  {speciesInfo.climateRegion}
+                </Grid>
+                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                  {'Generation Time'}
+                </Grid>
+                <Grid item xs={1} align='left'>
+                  {speciesInfo.generationTime}
+                </Grid>
+                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                  {'Trophic Level'}
+                </Grid>
+                <Grid item xs={1} align='left'>
+                  {speciesInfo.trophicLevel}
                 </Grid>
               </Grid>
             )}
