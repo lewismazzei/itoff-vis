@@ -70,7 +70,10 @@ export default function Home({ sheet, allSpecies }) {
     data: { nodes: [], links: [] },
   })
 
-  const expandGraph = (graph, speciesName) => {
+  const expandGraph = (graph, speciesName, maxLevel, currentLevel = 0) => {
+    // return the graph as is if the current recursion level exceeds the max level
+    if (currentLevel > maxLevel) return graph
+
     // get row of impacter species
     const speciesRow = allSpecies.indexOf(speciesName)
 
@@ -89,7 +92,7 @@ export default function Home({ sheet, allSpecies }) {
           // add it as a node
           graph.data.nodes.push({ id: impacted.name })
           // and recurse to further expand graph
-          graph = expandGraph(graph, impacted.name)
+          graph = expandGraph(graph, impacted.name, maxLevel, currentLevel + 1)
         }
 
         // add directed link from impacter to impacted species
@@ -114,7 +117,12 @@ export default function Home({ sheet, allSpecies }) {
           // add it as a node
           graph.data.nodes.push({ id: impactingSpeciesName })
           // and recurse to further expand graph
-          graph = expandGraph(graph, impactingSpeciesName)
+          graph = expandGraph(
+            graph,
+            impactingSpeciesName,
+            maxLevel,
+            currentLevel + 1
+          )
         }
 
         // add directed link from impacter to impacted species
@@ -141,7 +149,7 @@ export default function Home({ sheet, allSpecies }) {
       },
     }
     // expand graph with impacted species
-    graph = expandGraph(graph, speciesName)
+    graph = expandGraph(graph, speciesName, 5)
 
     return graph
   }
