@@ -72,7 +72,7 @@ const parseImpactingString = (impactingString) => {
     })
 }
 
-export default function Home({ allSpecies, sheet }) {
+export default function Home({ allSpecies, sheet, string }) {
   console.log(string)
   const [list, setList] = useState(allSpecies)
   const [graph, setGraph] = useState({
