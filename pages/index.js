@@ -3,18 +3,22 @@
 // import styles from '../styles/Home.module.css'
 import { useState, useCallback, useEffect } from 'react'
 import { google } from 'googleapis'
-import { Allotment } from 'allotment'
-import 'allotment/dist/style.css'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import {
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  TextField,
+  Drawer,
+  IconButton,
+} from '@mui/material'
+import { Menu as MenuIcon } from '@mui/icons-material'
+import SeparationSlider from '../components/SeparationSlider'
 import SpeciesGraph from '../components/SpeciesGraphWrapper'
-import TextField from '@mui/material/TextField'
 import Legend from '../components/Legend'
 import { items } from '../lib/legend'
-import SeparationSlider from '../components/SeparationSlider'
+import Header from '../components/Header'
 
 export async function getServerSideProps() {
   const auth = new google.auth.GoogleAuth({
@@ -73,9 +77,14 @@ export default function Home({ sheet, allSpecies }) {
   })
   const [currentSpecies, setCurrentSpecies] = useState(null)
   const [separation, setSeparation] = useState(0)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleSeparationChange = (event, value) => {
     setSeparation(value)
+  }
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen)
   }
 
   const expandGraph = useCallback(
@@ -196,62 +205,68 @@ export default function Home({ sheet, allSpecies }) {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <Allotment snap>
+      <Header onClick={handleToggle} />
+      <Drawer
+        anchor='left'
+        open={isOpen}
+        onClose={handleToggle}
+        variant='persistent'
+      >
+        <form>
+          <TextField
+            id='search-bar'
+            className='text'
+            onInput={(e) => {
+              setList(() => {
+                if (!e.target.value) return allSpecies
+                return allSpecies.filter((speciesName) =>
+                  speciesName.toLowerCase().includes(e.target.value)
+                )
+              })
+            }}
+            variant='outlined'
+            size='small'
+            fullWidth
+            placeholder='Search'
+            sx={{ padding: '10px' }}
+          />
+        </form>
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              width={width}
+              itemData={list}
+              itemCount={list.length}
+              itemSize={46}
+              overscanCount={50}
+            >
+              {ListItems}
+            </List>
+          )}
+        </AutoSizer>
+      </Drawer>
+      {graph.root ? (
         <>
-          <form>
-            <TextField
-              id='search-bar'
-              className='text'
-              onInput={(e) => {
-                setList(() => {
-                  if (!e.target.value) return allSpecies
-                  return allSpecies.filter((speciesName) =>
-                    speciesName.toLowerCase().includes(e.target.value)
-                  )
-                })
-              }}
-              variant='filled'
-              size='small'
-              fullWidth
-            />
-          </form>
-          <AutoSizer>
-            {({ height, width }) => (
-              <List
-                height={height}
-                width={width}
-                itemData={list}
-                itemCount={list.length}
-                itemSize={46}
-                overscanCount={50}
-              >
-                {ListItems}
-              </List>
-            )}
-          </AutoSizer>
+          <SpeciesGraph
+            speciesName={graph.root}
+            graphData={graph.data}
+            sheet={sheet}
+          />
+          <Legend items={items} />
+          <SeparationSlider maxLevel={10} onChange={handleSeparationChange} />
         </>
-        {graph.root ? (
-          <>
-            <SpeciesGraph
-              speciesName={graph.root}
-              graphData={graph.data}
-              sheet={sheet}
-            />
-            <Legend items={items} />
-            <SeparationSlider maxLevel={10} onChange={handleSeparationChange} />
-          </>
-        ) : (
-          <>
-            <div></div>
-            <Legend items={items} />
-            <SeparationSlider
-              maxLevel={10}
-              onChange={handleSeparationChange}
-              disabled={true}
-            />
-          </>
-        )}
-      </Allotment>
+      ) : (
+        <>
+          <div></div>
+          <Legend items={items} />
+          <SeparationSlider
+            maxLevel={10}
+            onChange={handleSeparationChange}
+            disabled={true}
+          />
+        </>
+      )}
     </div>
   )
 }

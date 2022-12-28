@@ -12,7 +12,7 @@ export default function Legend({ items }) {
         fontFamily: 'Helvetica',
         position: 'absolute',
         bottom: '20px',
-        right: '20px',
+        right: '15px',
         borderRadius: '20px',
         boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
         backgroundColor: 'aliceblue',
