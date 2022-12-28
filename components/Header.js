@@ -7,7 +7,6 @@ export default function Header({ onClick }) {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        // minHeight: '60px',
         letterSpacing: '0.05em',
         backgroundColor: 'aliceblue',
         borderBottom: '2px solid #ccc',
@@ -17,7 +16,11 @@ export default function Header({ onClick }) {
       <IconButton onClick={onClick} style={{ marginLeft: '2px' }}>
         <MenuIcon />
       </IconButton>
-      <h3 style={{ marginLeft: '3em', letterSpacing: '0.05em', color: "#1f2232"}}>ITOFF VIS</h3>
+      <h3
+        style={{ marginLeft: '3em', letterSpacing: '0.05em', color: '#1f2232' }}
+      >
+        ITOFF VIS
+      </h3>
     </div>
   )
 }
