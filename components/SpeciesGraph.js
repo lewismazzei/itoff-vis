@@ -33,7 +33,7 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             nodeCanvasObject={(node, ctx, globalScale) => {
               const label = node.id
               const fontSize = 14 / globalScale
-              ctx.font = `${fontSize}px Sans-Serif`
+              ctx.font = `${fontSize}px Oxygen`
               const textWidth = ctx.measureText(label).width
               const bckgDimensions = [textWidth, fontSize].map(
                 (n) => n + fontSize * 0.2
