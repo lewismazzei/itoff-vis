@@ -6,7 +6,7 @@ export default function Legend({ items }) {
         width: 'fit-content',
         borderRadius: '2px',
         border: '2px solid #ccc',
-        padding: '1em 1em 0 1em',
+        padding: '1em 1em 0.5em 1em',
         overflow: 'auto',
         minWidth: '125px',
         fontFamily: 'Helvetica',
