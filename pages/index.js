@@ -19,23 +19,23 @@ import { items } from '../lib/legend'
 import Header from '../components/Header'
 
 export async function getServerSideProps() {
-  // const auth = new google.auth.GoogleAuth({
-  //   credentials: {
-  //     client_email: process.env.CLIENT_EMAIL,
-  //     private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-  //   },
-  //   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-  // })
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: process.env.CLIENT_EMAIL,
+      private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+    },
+    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+  })
 
-  // const sheets = google.sheets({ version: 'v4', auth })
+  const sheets = google.sheets({ version: 'v4', auth })
 
-  // const response = await sheets.spreadsheets.values.get({
-  //   spreadsheetId: process.env.SHEET_ID,
-  //   range: 'Sheet1',
-  // })
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.SHEET_ID,
+    range: 'Sheet1',
+  })
 
-  // const sheet = response.data.values.slice(1)
-  // const allSpecies = sheet.map((row) => row[0])
+  const sheet = response.data.values.slice(1)
+  const allSpecies = sheet.map((row) => row[0])
 
   const string = 'hi, im from the server'
 
@@ -44,6 +44,8 @@ export async function getServerSideProps() {
   return {
     props: {
       string,
+      allSpecies,
+      sheet,
     },
   }
 }
@@ -70,7 +72,7 @@ const parseImpactingString = (impactingString) => {
     })
 }
 
-export default function Home({ string }) {
+export default function Home({ allSpecies, sheet }) {
   console.log(string)
   const [list, setList] = useState(allSpecies)
   const [graph, setGraph] = useState({
