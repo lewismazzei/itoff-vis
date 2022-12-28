@@ -12,6 +12,8 @@ import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SpeciesGraph from '../components/SpeciesGraphWrapper'
 import TextField from '@mui/material/TextField'
+import Legend from '../components/Legend'
+import { items } from '../lib/legend'
 
 export async function getServerSideProps() {
   const auth = new google.auth.GoogleAuth({
@@ -149,7 +151,7 @@ export default function Home({ sheet, allSpecies }) {
       },
     }
     // expand graph with impacted species
-    graph = expandGraph(graph, speciesName, 5)
+    graph = expandGraph(graph, speciesName, 2)
 
     return graph
   }
@@ -207,13 +209,19 @@ export default function Home({ sheet, allSpecies }) {
           </AutoSizer>
         </>
         {graph.root ? (
-          <SpeciesGraph
-            speciesName={graph.root}
-            graphData={graph.data}
-            sheet={sheet}
-          />
+          <>
+            <SpeciesGraph
+              speciesName={graph.root}
+              graphData={graph.data}
+              sheet={sheet}
+            />
+            <Legend items={items} />
+          </>
         ) : (
-          <div></div>
+          <>
+            <div></div>
+            <Legend items={items} />
+          </>
         )}
       </Allotment>
     </div>
