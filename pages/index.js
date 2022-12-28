@@ -1,7 +1,7 @@
 // import Head from 'next/head'
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
-import { useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { google } from 'googleapis'
 import { Allotment } from 'allotment'
 import 'allotment/dist/style.css'
@@ -14,6 +14,7 @@ import SpeciesGraph from '../components/SpeciesGraphWrapper'
 import TextField from '@mui/material/TextField'
 import Legend from '../components/Legend'
 import { items } from '../lib/legend'
+import SeparationSlider from '../components/SeparationSlider'
 
 export async function getServerSideProps() {
   const auth = new google.auth.GoogleAuth({
@@ -66,95 +67,111 @@ const parseImpactingString = (impactingString) => {
 
 export default function Home({ sheet, allSpecies }) {
   const [list, setList] = useState(allSpecies)
-  // const [selected, setSelected] = useState(null)
   const [graph, setGraph] = useState({
     root: null,
     data: { nodes: [], links: [] },
   })
+  const [currentSpecies, setCurrentSpecies] = useState(null)
+  const [separation, setSeparation] = useState(0)
 
-  const expandGraph = (graph, speciesName, maxLevel, currentLevel = 0) => {
-    // return the graph as is if the current recursion level exceeds the max level
-    if (currentLevel > maxLevel) return graph
-
-    // get row of impacter species
-    const speciesRow = allSpecies.indexOf(speciesName)
-
-    // return graph as is if impacter species cannot be found
-    if (speciesRow === -1) return graph
-
-    // parse impacted species names and types
-    const impactedSpecies = parseImpactingString(sheet[speciesRow][14])
-
-    // return graph as is if there are no impacted species
-    if (impactedSpecies) {
-      // iterate through impacted species
-      for (const impacted of impactedSpecies) {
-        // if impacted species is not in the graph
-        if (!graph.data.nodes.some((node) => node.id === impacted.name)) {
-          // add it as a node
-          graph.data.nodes.push({ id: impacted.name })
-          // and recurse to further expand graph
-          graph = expandGraph(graph, impacted.name, maxLevel, currentLevel + 1)
-        }
-
-        // add directed link from impacter to impacted species
-        graph.data.links.push({
-          source: speciesName,
-          target: impacted.name,
-          impactTypes: impacted.impactTypes,
-        })
-      }
-    }
-
-    for (const sheetRow of sheet) {
-      const impactingSpeciesName = sheetRow[0]
-      const impactedSpecies = parseImpactingString(sheetRow[14])
-
-      if (!impactedSpecies) continue
-
-      if (impactedSpecies.some((impacted) => impacted.name === speciesName)) {
-        if (
-          !graph.data.nodes.some((node) => node.id === impactingSpeciesName)
-        ) {
-          // add it as a node
-          graph.data.nodes.push({ id: impactingSpeciesName })
-          // and recurse to further expand graph
-          graph = expandGraph(
-            graph,
-            impactingSpeciesName,
-            maxLevel,
-            currentLevel + 1
-          )
-        }
-
-        // add directed link from impacter to impacted species
-        graph.data.links.push({
-          source: impactingSpeciesName,
-          target: speciesName,
-          impactTypes: impactedSpecies.find(
-            (impacted) => impacted.name === speciesName
-          ).impactTypes,
-        })
-      }
-    }
-
-    return graph
+  const handleSeparationChange = (event, value) => {
+    setSeparation(value)
   }
 
-  const buildGraph = (speciesName) => {
-    // initialise graph with selected species
-    let graph = {
-      root: speciesName,
-      data: {
-        nodes: [{ id: speciesName }],
-        links: [],
-      },
-    }
-    // expand graph with impacted species
-    graph = expandGraph(graph, speciesName, 2)
+  const expandGraph = useCallback(
+    (graph, speciesName, maxLevel, currentLevel = 0) => {
+      // return the graph as is if the current recursion level exceeds the max level
+      if (currentLevel > maxLevel) return graph
 
-    return graph
-  }
+      // get row of impacter species
+      const speciesRow = allSpecies.indexOf(speciesName)
+
+      // return graph as is if impacter species cannot be found
+      if (speciesRow === -1) return graph
+
+      // parse impacted species names and types
+      const impactedSpecies = parseImpactingString(sheet[speciesRow][14])
+
+      // return graph as is if there are no impacted species
+      if (impactedSpecies) {
+        // iterate through impacted species
+        for (const impacted of impactedSpecies) {
+          // if impacted species is not in the graph
+          if (!graph.data.nodes.some((node) => node.id === impacted.name)) {
+            // add it as a node
+            graph.data.nodes.push({ id: impacted.name })
+            // and recurse to further expand graph
+            graph = expandGraph(
+              graph,
+              impacted.name,
+              maxLevel,
+              currentLevel + 1
+            )
+          }
+
+          // add directed link from impacter to impacted species
+          graph.data.links.push({
+            source: speciesName,
+            target: impacted.name,
+            impactTypes: impacted.impactTypes,
+          })
+        }
+      }
+
+      for (const sheetRow of sheet) {
+        const impactingSpeciesName = sheetRow[0]
+        const impactedSpecies = parseImpactingString(sheetRow[14])
+
+        if (!impactedSpecies) continue
+
+        if (impactedSpecies.some((impacted) => impacted.name === speciesName)) {
+          if (
+            !graph.data.nodes.some((node) => node.id === impactingSpeciesName)
+          ) {
+            // add it as a node
+            graph.data.nodes.push({ id: impactingSpeciesName })
+            // and recurse to further expand graph
+            graph = expandGraph(
+              graph,
+              impactingSpeciesName,
+              maxLevel,
+              currentLevel + 1
+            )
+          }
+
+          // add directed link from impacter to impacted species
+          graph.data.links.push({
+            source: impactingSpeciesName,
+            target: speciesName,
+            impactTypes: impactedSpecies.find(
+              (impacted) => impacted.name === speciesName
+            ).impactTypes,
+          })
+        }
+      }
+
+      return graph
+    },
+    [allSpecies, sheet]
+  )
+
+  const buildGraph = useCallback(
+    (speciesName, maxLevel) => {
+      // initialise graph with selected species
+      let graph = {
+        root: speciesName,
+        data: {
+          nodes: [{ id: speciesName }],
+          links: [],
+        },
+      }
+      // expand graph with impacted species
+      graph = expandGraph(graph, speciesName, maxLevel)
+
+      return graph
+    },
+    [expandGraph]
+  )
 
   const ListItems = ({ index, data, style }) => {
     const species = data[index]
@@ -163,7 +180,8 @@ export default function Home({ sheet, allSpecies }) {
       <ListItem key={index} style={style} component='div' disablePadding>
         <ListItemButton
           onClick={(e) => {
-            setGraph(buildGraph(e.target.innerText))
+            setCurrentSpecies(e.target.innerText)
+            // setGraph(buildGraph(e.target.innerText, separation))
           }}
         >
           <ListItemText primary={species} />
@@ -171,6 +189,10 @@ export default function Home({ sheet, allSpecies }) {
       </ListItem>
     )
   }
+
+  useEffect(() => {
+    setGraph(buildGraph(currentSpecies, separation - 1))
+  }, [allSpecies, buildGraph, currentSpecies, separation])
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
@@ -216,11 +238,17 @@ export default function Home({ sheet, allSpecies }) {
               sheet={sheet}
             />
             <Legend items={items} />
+            <SeparationSlider maxLevel={10} onChange={handleSeparationChange} />
           </>
         ) : (
           <>
             <div></div>
             <Legend items={items} />
+            <SeparationSlider
+              maxLevel={10}
+              onChange={handleSeparationChange}
+              disabled={true}
+            />
           </>
         )}
       </Allotment>
