@@ -60,3 +60,28 @@ form {
   padding: 10px 0 10px 0;
   padding-left: 16px;
 }
+
+/* smaller screens */
+@media (max-height: 600px) {
+  #legend {
+    bottom: 20px;
+    left: 15px;
+  }
+  #legend-label {
+    /* smaller screens */
+    font-size: 0.75rem;
+  }
+}
+
+/* larger screens */
+@media (min-height: 600px) {
+  #legend {
+    /* smaller screens */
+    bottom: 20px;
+    right: 15px;
+  }
+  #legend-label {
+    /* smaller screens */
+    font-size: 1rem;
+  }
+}

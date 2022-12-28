@@ -1,6 +1,7 @@
 export default function Legend({ items }) {
   return (
     <div
+      id='legend'
       style={{
         backgroundColor: 'aliceblue',
         width: 'fit-content',
@@ -10,8 +11,6 @@ export default function Legend({ items }) {
         overflow: 'auto',
         minWidth: '125px',
         position: 'absolute',
-        bottom: '20px',
-        right: '15px',
         borderRadius: '20px',
         boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
         backgroundColor: 'aliceblue',
@@ -35,14 +34,13 @@ export default function Legend({ items }) {
               borderRadius: '2px',
               backgroundColor: item.color,
               marginRight: '0.5em',
-              minWidth: '20px',
+              width: '20px',
             }}
           />
           <span
+            id='legend-label'
             style={{
-              fontSize: '0.9em',
               color: '#1f2232',
-              letterSpacing: '0.05em',
             }}
           >
             {item.label}
