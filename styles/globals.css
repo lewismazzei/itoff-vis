@@ -37,5 +37,9 @@ a {
 } */
 
 .MuiSlider-root {
-  color: #7d80da !important;
+  color: #006699 !important;
+}
+
+.Mui-disabled {
+  color: grey !important;
 }
