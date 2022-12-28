@@ -9,7 +9,7 @@ export default function Header({ onClick }) {
         flexDirection: 'row',
         letterSpacing: '0.05em',
         backgroundColor: 'aliceblue',
-        borderBottom: '2px solid #ccc',
+        borderBottom: '1px solid #ccc',
         boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
       }}
     >
