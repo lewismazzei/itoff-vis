@@ -11,9 +11,7 @@ import {
   ListItemText,
   TextField,
   Drawer,
-  IconButton,
 } from '@mui/material'
-import { Menu as MenuIcon } from '@mui/icons-material'
 import SeparationSlider from '../components/SeparationSlider'
 import SpeciesGraph from '../components/SpeciesGraphWrapper'
 import Legend from '../components/Legend'
@@ -190,7 +188,6 @@ export default function Home({ sheet, allSpecies }) {
         <ListItemButton
           onClick={(e) => {
             setCurrentSpecies(e.target.innerText)
-            // setGraph(buildGraph(e.target.innerText, separation))
           }}
         >
           <ListItemText primary={species} />
@@ -215,7 +212,6 @@ export default function Home({ sheet, allSpecies }) {
         <form>
           <TextField
             id='search-bar'
-            className='text'
             onInput={(e) => {
               setList(() => {
                 if (!e.target.value) return allSpecies

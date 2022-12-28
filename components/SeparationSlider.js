@@ -5,7 +5,7 @@ export default function SeparationSlider({ maxLevel, onChange, disabled }) {
     <div
       style={{
         position: 'absolute',
-        top: '70px',
+        top: '80px',
         right: '15px',
         width: 'fit-content',
         height: 'fit-content',
@@ -18,11 +18,10 @@ export default function SeparationSlider({ maxLevel, onChange, disabled }) {
         borderRadius: '20px',
         boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
         backgroundColor: 'aliceblue',
-        fontFamily: 'Helvetica',
       }}
     >
       <div style={{ marginBottom: '0.5em', letterSpacing: '0.05em' }}>
-        <strong>Max Degree of Separation</strong>
+        <strong style={{ color: '#1f2232' }}>Max Degree of Separation</strong>
       </div>
       <Slider
         defaultValue={0}

@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400&display=swap');
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 }
 
 a {
@@ -13,11 +15,27 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: Oxygen, sans-serif;
 }
 
 .MuiDrawer-paper {
   min-width: 290px;
-  margin-top: 62px;
+  margin-top: 63px;
   border-right: 2px solid #ccc;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+}
+
+.MuiListItemText-primary {
+  font-family: 'Oxygen', sans-serif;
+  color: #1f2232;
+  letter-spacing: 0.05em;
+}
+
+/* .MuiTextField-root {
+  font-family: 'Oxygen', sans-serif;
+  color: #1f2232;
+} */
+
+.MuiSlider-root {
+  color: #7d80da !important;
 }

@@ -9,7 +9,6 @@ export default function Legend({ items }) {
         padding: '1em 1em 0.5em 1em',
         overflow: 'auto',
         minWidth: '125px',
-        fontFamily: 'Helvetica',
         position: 'absolute',
         bottom: '20px',
         right: '15px',
@@ -39,7 +38,15 @@ export default function Legend({ items }) {
               minWidth: '20px',
             }}
           />
-          <span style={{ fontSize: '0.9em' }}>{item.label}</span>
+          <span
+            style={{
+              fontSize: '0.9em',
+              color: '#1f2232',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {item.label}
+          </span>
         </div>
       ))}
     </div>
