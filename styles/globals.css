@@ -32,14 +32,31 @@ a {
 }
 
 /* .MuiTextField-root {
-  font-family: 'Oxygen', sans-serif;
-  color: #1f2232;
+  margin-left: 16px;
+  padding: 10px 10px 10px 0;
 } */
 
+form {
+  background-color: white;
+}
+
+.MuiInputBase-input {
+  background-color: #f5f5f5;
+}
+
 .MuiSlider-root {
-  color: #006699 !important;
+  color: #006699;
 }
 
 .Mui-disabled {
-  color: grey !important;
+  color: grey;
+}
+
+.Mui-selected {
+  background-color: aliceblue;
+}
+
+.MuiButtonBase-root {
+  padding: 10px 0 10px 0;
+  padding-left: 16px;
 }

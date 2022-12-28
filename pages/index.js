@@ -75,14 +75,14 @@ export default function Home({ sheet, allSpecies }) {
   })
   const [currentSpecies, setCurrentSpecies] = useState(null)
   const [separation, setSeparation] = useState(0)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   const handleSeparationChange = (event, value) => {
     setSeparation(value)
   }
 
   const handleToggle = () => {
-    setIsOpen(!isOpen)
+    setIsDrawerOpen(!isDrawerOpen)
   }
 
   const expandGraph = useCallback(
@@ -184,11 +184,13 @@ export default function Home({ sheet, allSpecies }) {
     const species = data[index]
 
     return (
-      <ListItem key={index} style={style} component='div' disablePadding>
+      <ListItem key={index} component='div' disablePadding>
         <ListItemButton
           onClick={(e) => {
             setCurrentSpecies(e.target.innerText)
           }}
+          selected={species === currentSpecies}
+          disableTouchRipple
         >
           <ListItemText primary={species} />
         </ListItemButton>
@@ -202,10 +204,10 @@ export default function Home({ sheet, allSpecies }) {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <Header onClick={handleToggle} />
+      <Header onClick={handleToggle} isDrawerOpen={isDrawerOpen} />
       <Drawer
         anchor='left'
-        open={isOpen}
+        open={isDrawerOpen}
         onClose={handleToggle}
         variant='persistent'
       >
