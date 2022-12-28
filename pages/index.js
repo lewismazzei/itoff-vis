@@ -37,10 +37,15 @@ export async function getServerSideProps() {
   const sheet = response.data.values.slice(1)
   const allSpecies = sheet.map((row) => row[0])
 
+  const string = 'hi, im from the server'
+
+  console.log(string)
+
   return {
     props: {
-      sheet,
+      string,
       allSpecies,
+      sheet,
     },
   }
 }
@@ -67,7 +72,8 @@ const parseImpactingString = (impactingString) => {
     })
 }
 
-export default function Home({ sheet, allSpecies }) {
+export default function Home({ allSpecies, sheet, string }) {
+  console.log(string)
   const [list, setList] = useState(allSpecies)
   const [graph, setGraph] = useState({
     root: null,
