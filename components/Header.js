@@ -1,5 +1,5 @@
-import { IconButton } from '@mui/material'
-import { Menu as MenuIcon } from '@mui/icons-material'
+import { Button, IconButton } from '@mui/material'
+// import { Menu as MenuIcon } from '@mui/icons-material'
 import { useEffect } from 'react'
 
 export default function Header({ onClick, isDrawerOpen }) {
@@ -33,12 +33,13 @@ export default function Header({ onClick, isDrawerOpen }) {
         // isDrawerOpen ? 'height: 80px' : 'height: 60px',
       }}
     >
-      <IconButton onClick={onClick} disableRipple>
-        <MenuIcon
+      {/* <IconButton onClick={onClick} disableRipple> */}
+      {/* <MenuIcon
           fontSize='large'
           style={isDrawerOpen ? flipOpen : flipClose}
-        />
-      </IconButton>
+        /> */}
+      {/* </IconButton> */}
+      <Button onClick={onClick}>MENU</Button>
       <div style={{ height: '100%' }}>
         <h3
           style={{
