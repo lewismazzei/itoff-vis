@@ -245,7 +245,7 @@ export default function Home({ allSpecies, sheet }) {
               itemData={list}
               itemCount={list.length}
               itemSize={46}
-              overscanCount={25}
+              overscanCount={50}
             >
               {ListItems}
             </List>
@@ -264,7 +264,11 @@ export default function Home({ allSpecies, sheet }) {
         </>
       ) : (
         <>
-          <div></div>
+          <SpeciesGraph
+            speciesName={graph.root}
+            graphData={{ nodes: [], links: [] }}
+            sheet={sheet}
+          />
           <Legend items={items} />
           <SeparationSlider
             maxLevel={10}
