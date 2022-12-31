@@ -135,7 +135,15 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             }}
           />
 
-          <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
+          <Drawer
+            anchor={'right'}
+            open={open}
+            onClose={() => setOpen(false)}
+            style={{
+              borderLeft: '2px solid #ccc',
+              boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
+            }}
+          >
             {speciesInfo && (
               <Grid
                 container
@@ -145,47 +153,75 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                   paddingTop: 2,
                   paddingLeft: 2,
                   paddingRight: 2,
-                  maxWidth: '15vw',
+                  maxWidth: '220px',
                   minWidth: '250px',
                 }}
               >
                 <Grid
                   item
                   xs={1}
-                  align='center'
-                  sx={{ fontSize: 'h6.fontSize', paddingBottom: 2 }}
+                  align='left'
+                  sx={{
+                    fontSize: 'h6.fontSize',
+                    paddingBottom: 2,
+                  }}
                 >
                   {speciesInfo.name}
                 </Grid>
-                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                <Grid
+                  item
+                  xs={1}
+                  align='left'
+                  sx={{ fontWeight: 'bold', fontSize: '20px' }}
+                >
                   {'System'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.system}
+                  {speciesInfo.system || 'No Data'}
                 </Grid>
-                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                <Grid
+                  item
+                  xs={1}
+                  align='left'
+                  sx={{ fontWeight: 'bold', fontSize: '20px' }}
+                >
                   {'Status'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.status}
+                  {speciesInfo.status || 'No Data'}
                 </Grid>
-                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                <Grid
+                  item
+                  xs={1}
+                  align='left'
+                  sx={{ fontWeight: 'bold', fontSize: '20px' }}
+                >
                   {'Climate Region'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.climateRegion}
+                  {speciesInfo.climateRegion || 'No Data'}
                 </Grid>
-                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                <Grid
+                  item
+                  xs={1}
+                  align='left'
+                  sx={{ fontWeight: 'bold', fontSize: '20px' }}
+                >
                   {'Generation Time'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.generationTime}
+                  {speciesInfo.generationTime || 'No Data'}
                 </Grid>
-                <Grid item xs={1} align='left' sx={{ fontWeight: 'bold' }}>
+                <Grid
+                  item
+                  xs={1}
+                  align='left'
+                  sx={{ fontWeight: 'bold', fontSize: '20px' }}
+                >
                   {'Trophic Level'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.trophicLevel}
+                  {speciesInfo.trophicLevel || 'No Data'}
                 </Grid>
               </Grid>
             )}

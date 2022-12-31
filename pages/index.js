@@ -264,11 +264,6 @@ export default function Home({ allSpecies, sheet }) {
         </>
       ) : (
         <>
-          {/* <SpeciesGraph
-            speciesName={graph.root}
-            graphData={{ nodes: [], links: [] }}
-            sheet={sheet}
-          /> */}
           <Legend items={items} />
           <SeparationSlider
             maxLevel={10}
