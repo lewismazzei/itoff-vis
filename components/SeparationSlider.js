@@ -24,7 +24,7 @@ export default function SeparationSlider({ maxLevel, onChange, disabled }) {
         <strong style={{ color: '#1f2232' }}>Degree of Separation</strong>
       </div>
       <Slider
-        defaultValue={0}
+        defaultValue={1}
         valueLabelDisplay='auto'
         step={1}
         min={0}

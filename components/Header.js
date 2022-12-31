@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@mui/material'
+import { IconButton } from '@mui/material'
 import MenuIcon from './MenuIcon'
 
 export default function Header({ onClick, isDrawerOpen }) {
