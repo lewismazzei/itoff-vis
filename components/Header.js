@@ -15,7 +15,11 @@ export default function Header({ onClick, isDrawerOpen }) {
           alignItems: 'center',
         }}
       >
-        <IconButton onClick={onClick} disableRipple>
+        <IconButton
+          onClick={onClick}
+          disableRipple
+          style={{ marginLeft: '0.1em' }}
+        >
           <MenuIcon orientation={isDrawerOpen} />
         </IconButton>
         <div style={{ height: '100%' }}>
