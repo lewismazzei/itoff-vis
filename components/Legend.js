@@ -10,7 +10,7 @@ export default function Legend({ items }) {
         padding: '1em 1em 0.5em 1em',
         overflow: 'auto',
         minWidth: '125px',
-        position: 'absolute',
+        position: 'fixed',
         borderRadius: '20px',
         boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.1)',
         backgroundColor: 'aliceblue',

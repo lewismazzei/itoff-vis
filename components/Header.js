@@ -6,6 +6,8 @@ export default function Header({ onClick, isDrawerOpen }) {
     <>
       <div
         style={{
+          position: 'fixed',
+          width: '100%',
           display: 'flex',
           flexDirection: 'row',
           letterSpacing: '0.05em',

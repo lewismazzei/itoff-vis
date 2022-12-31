@@ -4,7 +4,7 @@ export default function SeparationSlider({ maxLevel, onChange, disabled }) {
   return (
     <div
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: '80px',
         right: '15px',
         width: 'fit-content',
