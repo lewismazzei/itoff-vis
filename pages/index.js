@@ -82,7 +82,7 @@ export default function Home({ allSpecies, sheet }) {
     data: { nodes: [], links: [] },
   })
   const [currentSpecies, setCurrentSpecies] = useState(null)
-  const [separation, setSeparation] = useState(0)
+  const [separation, setSeparation] = useState(1)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   const handleSeparationChange = (event, value) => {
