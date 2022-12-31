@@ -192,7 +192,7 @@ export default function Home({ allSpecies, sheet }) {
     const species = data[index]
 
     return (
-      <ListItem key={index} component='div' disablePadding>
+      <ListItem key={index} component='div' disablePadding style={style}>
         <ListItemButton
           onClick={(e) => {
             setCurrentSpecies(e.target.innerText)
@@ -245,7 +245,7 @@ export default function Home({ allSpecies, sheet }) {
               itemData={list}
               itemCount={list.length}
               itemSize={46}
-              overscanCount={50}
+              overscanCount={25}
             >
               {ListItems}
             </List>
