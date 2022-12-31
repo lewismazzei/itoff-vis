@@ -244,7 +244,7 @@ export default function Home({ allSpecies, sheet }) {
               width={width}
               itemData={list}
               itemCount={list.length}
-              itemSize={46}
+              itemSize={52}
               overscanCount={50}
             >
               {ListItems}

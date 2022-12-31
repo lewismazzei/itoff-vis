@@ -20,7 +20,7 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
             graphData={graphData}
             cooldownTime={1500}
             onEngineStop={() => {
-              if (!graphData.root) return
+              if (graphData.root === null) return
 
               const rootNode = graphData.nodes.find(
                 (node) => node.id === speciesName
