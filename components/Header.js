@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import MenuIcon from './MenuIcon'
 
 export default function Header({ onClick, isDrawerOpen }) {
@@ -15,9 +15,9 @@ export default function Header({ onClick, isDrawerOpen }) {
           alignItems: 'center',
         }}
       >
-        <Button onClick={onClick} disableRipple>
+        <IconButton onClick={onClick} disableRipple>
           <MenuIcon orientation={isDrawerOpen} />
-        </Button>
+        </IconButton>
         <div style={{ height: '100%' }}>
           <h3
             style={{
