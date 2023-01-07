@@ -3,6 +3,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { useRef, useState } from 'react'
 import Drawer from '@mui/material/Drawer'
 import Grid from '@mui/material/Grid'
+import { legend } from '../lib/legend'
 
 export default function SpeciesGraph({ speciesName, graphData, sheet }) {
   const fgRef = useRef()
@@ -65,34 +66,34 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
               } else {
                 switch (status.toLowerCase()) {
                   case 'invasive':
-                    color = '#FF2C00'
+                    color = legend.find((l) => l.label === 'Invasive').color
                     break
                   case 'established':
-                    color = '#FF8D53'
+                    color = legend.find((l) => l.label === 'Established').color
                     break
                   case 'reported':
-                    color = '#FFEF2F'
+                    color = legend.find((l) => l.label === 'Reported').color
                     break
                   case 'failed':
-                    color = '#FFB0B5'
+                    color = legend.find((l) => l.label === 'Failed').color
                     break
                   case 'extirpated':
-                    color = '#FFD698'
+                    color = legend.find((l) => l.label === 'Extirpated').color
                     break
                   case 'en':
-                    color = '#8DC9FF'
+                    color = legend.find((l) => l.label === 'EN').color
                     break
                   case 'cr':
-                    color = '#0006FF'
+                    color = legend.find((l) => l.label === 'CR').color
                     break
                   case 'lc':
-                    color = '#77FF80'
+                    color = legend.find((l) => l.label === 'LC').color
                     break
                     {
                       /* other */
                     }
                   default:
-                    color = 'grey'
+                    color = legend.find((l) => l.label === 'Other').color
                 }
               }
               ctx.fillStyle = color

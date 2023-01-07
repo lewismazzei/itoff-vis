@@ -15,7 +15,7 @@ import {
 import SeparationSlider from '../components/SeparationSlider'
 import SpeciesGraph from '../components/SpeciesGraphWrapper'
 import Legend from '../components/Legend'
-import { items } from '../lib/legend'
+import { legend } from '../lib/legend'
 import Header from '../components/Header'
 import { google } from 'googleapis'
 
@@ -259,12 +259,12 @@ export default function Home({ allSpecies, sheet }) {
             graphData={graph.data}
             sheet={sheet}
           />
-          <Legend items={items} />
+          <Legend items={legend} />
           <SeparationSlider maxLevel={10} onChange={handleSeparationChange} />
         </>
       ) : (
         <>
-          <Legend items={items} />
+          <Legend items={legend} />
           <SeparationSlider
             maxLevel={10}
             onChange={handleSeparationChange}
