@@ -105,7 +105,7 @@ export default function Home({ allSpecies, sheet }) {
       if (speciesRow === -1) return graph
 
       // parse impacted species names and types
-      const impactedSpecies = parseImpactingString(sheet[speciesRow][14])
+      const impactedSpecies = parseImpactingString(sheet[speciesRow][21])
 
       // return graph as is if there are no impacted species
       if (impactedSpecies) {
@@ -135,7 +135,7 @@ export default function Home({ allSpecies, sheet }) {
 
       for (const sheetRow of sheet) {
         const impactingSpeciesName = sheetRow[0]
-        const impactedSpecies = parseImpactingString(sheetRow[14])
+        const impactedSpecies = parseImpactingString(sheetRow[21])
 
         if (!impactedSpecies) continue
 

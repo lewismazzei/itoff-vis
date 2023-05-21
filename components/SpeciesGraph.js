@@ -5,10 +5,32 @@ import Drawer from '@mui/material/Drawer'
 import Grid from '@mui/material/Grid'
 import { legend } from '../lib/legend'
 
+
 export default function SpeciesGraph({ speciesName, graphData, sheet }) {
   const fgRef = useRef()
   const [open, setOpen] = useState(false)
   const [speciesInfo, setSpeciesInfo] = useState(null)
+
+  function getClimateRegions(speciesRow) {
+    const climateRegions = []
+    if (sheet[speciesRow][16] === '1') {
+      climateRegions.push('Polar')
+    }
+    if (sheet[speciesRow][17] === '1') {
+      climateRegions.push('Boreal')
+    }
+    if (sheet[speciesRow][18] === '1') {
+
+      climateRegions.push('Temperate')
+    }
+    if (sheet[speciesRow][19] === '1') {
+      climateRegions.push('Subtropical')
+    }
+    if (sheet[speciesRow][20] === '1') {
+      climateRegions.push('Tropical')
+    }
+    return climateRegions
+  }
 
   return (
     <AutoSizer>
@@ -55,7 +77,7 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
               }
               const speciesRow = sheet.findIndex((row) => row[0] == node.id)
               const status =
-                speciesRow === -1 ? undefined : sheet[speciesRow][10]
+                speciesRow === -1 ? undefined : sheet[speciesRow][12]
               let color = ''
 
               {
@@ -124,11 +146,11 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                 trophicLevel: 'No Data',
               }
               if (speciesRow > -1) {
-                info.system = sheet[speciesRow][7]
-                info.status = sheet[speciesRow][10]
-                info.climateRegion = sheet[speciesRow][13]
-                info.generationTime = sheet[speciesRow][21]
-                info.trophicLevel = sheet[speciesRow][22]
+                info.system = sheet[speciesRow][10]
+                info.status = sheet[speciesRow][12]
+                info.climateRegion = getClimateRegions(speciesRow)?.join(', ') ?? 'No Data'
+                info.generationTime = sheet[speciesRow][37]
+                info.trophicLevel = sheet[speciesRow][38]
               }
 
               setSpeciesInfo(info)
@@ -197,7 +219,7 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                   align='left'
                   sx={{ fontWeight: 'bold', fontSize: '20px' }}
                 >
-                  {'Climate Region'}
+                  {'Climate Regions'}
                 </Grid>
                 <Grid item xs={1} align='left'>
                   {speciesInfo.climateRegion || 'No Data'}
@@ -211,7 +233,7 @@ export default function SpeciesGraph({ speciesName, graphData, sheet }) {
                   {'Generation Time'}
                 </Grid>
                 <Grid item xs={1} align='left'>
-                  {speciesInfo.generationTime || 'No Data'}
+                  {speciesInfo.generationTime + ' years' || 'No Data'}
                 </Grid>
                 <Grid
                   item
