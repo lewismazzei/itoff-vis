@@ -57,7 +57,7 @@ form {
 }
 
 .MuiSlider-root {
-  color: #006699;
+  color: #006699 !important;
 }
 
 .Mui-disabled {
