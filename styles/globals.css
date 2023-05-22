@@ -27,11 +27,21 @@ a {
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
 }
 
-.MuiListItemText-primary {
+.MuiTypography-root {
   font-family: 'Oxygen', sans-serif;
   color: #1f2232;
-  letter-spacing: 0.05em;
 }
+
+.MuiFormControlLabel-root {
+  color: #1f2232;
+  font-family: "'Oxygen', sans-serif";
+}
+
+.MuiRadio-root.Mui-checked {
+  color: #006699;
+}
+
+
 
 /* .MuiTextField-root {
   margin-left: 16px;
@@ -61,6 +71,14 @@ form {
 .MuiButtonBase-root {
   padding: 10px 0 10px 0;
   padding-left: 16px;
+}
+
+.MuiButtonBase-root.MuiRadio-root {
+  padding: 0px 10px;
+}
+
+.MuiFormControlLabel-root {
+  padding: 10px 0;
 }
 
 /* smaller screens */
