@@ -28,8 +28,8 @@ a {
 }
 
 .MuiTypography-root {
-  font-family: 'Oxygen', sans-serif;
-  color: #1f2232;
+  font-family: 'Oxygen', sans-serif !important;
+  color: #1f2232 !important;
 }
 
 .MuiFormControlLabel-root {
@@ -38,7 +38,7 @@ a {
 }
 
 .MuiRadio-root.Mui-checked {
-  color: #006699;
+  color: #006699 !important;
 }
 
 
