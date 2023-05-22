@@ -10,7 +10,13 @@ Visualisation software for the [ITOFF](https://itoff-dataset.wp.st-andrews.ac.uk
 1. Navigate to root directory:
 `cd itoff-vis`
 
-2. Run Development Server:
+2. Install dependencies:
+`npm install`
+
+3. Add environment variables:
+`touch .env.local`
+
+3. Run development server:
 `npm run dev`
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
