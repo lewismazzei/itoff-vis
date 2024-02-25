@@ -26,7 +26,6 @@ export default function ClimateRegionSelector({ onChange, validRegions = [] }) {
                 marginTop: "10px",
             }}
         >
-            {console.log(validRegions)}
             <FormControl component='fieldset'>
                 <FormLabel
                     component='legend'
@@ -36,11 +35,11 @@ export default function ClimateRegionSelector({ onChange, validRegions = [] }) {
                 </FormLabel>
                 <RadioGroup
                     onChange={onChange}
-                    defaultValue={validRegions === [] ? "none" : "all"}
+                    defaultValue={validRegions == [] ? "none" : "all"}
                 >
                     <FormControlLabel
                         value='all'
-                        control={<Radio disabled={validRegions === []} />}
+                        control={<Radio disabled={validRegions == []} />}
                         label='All'
                     />
                     <FormControlLabel
